@@ -1,12 +1,6 @@
+import type { MovieType } from "../Types/movieTypes";
 
-
-type MovieProps = {
-    title: string,
-    overView: string,
-    posterPath: string
-}
-
-const Movie : React.FC<MovieProps> = ({title, overView, posterPath}) => {
+const Movie : React.FC<MovieType> = ({title, overView, posterPath}) => {
     const imageUrl = `https://image.tmdb.org/t/p/w500${posterPath}`;
     return (
         <div>

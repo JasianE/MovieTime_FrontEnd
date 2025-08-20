@@ -5,12 +5,6 @@ type SignUpProps = {
   changeJwt: (change: string) => void;
 }
 
-
-type errorResponse = {
-    code: string,
-    description: string
-}
-
 const SignUp : React.FC<SignUpProps> = ({changeJwt}) => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({username: "", password: "", email: ""});

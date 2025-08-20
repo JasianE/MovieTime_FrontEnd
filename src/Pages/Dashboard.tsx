@@ -1,6 +1,7 @@
 import React,{useEffect, useState} from "react";
 import GetAllUserMovies from "../Services/UserMovie.service";
 import Movie from "../Components/Movie";
+import type { MovieType } from "../Types/movieTypes";
 
 type DashboardProps = {
     jwt: string
@@ -24,8 +25,8 @@ const Dashboard : React.FC<DashboardProps> = ({jwt}) => {
 
     return(
         <div>
-            <h1>Helldsaflsoo!!!</h1>
-            {movies.map((movie : MovieProps) => {
+            Movies recommended to you:
+            {movies.map((movie : MovieType) => {
                 return(<Movie title={movie.title} posterPath={movie.posterPath} overView={movie.overView}/>)
             })}
         </div>
