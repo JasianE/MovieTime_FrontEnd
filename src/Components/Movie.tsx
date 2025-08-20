@@ -1,12 +1,13 @@
 import type { MovieType } from "../Types/movieTypes";
+import "../App.css"
 
 const Movie : React.FC<MovieType> = ({title, overView, posterPath}) => {
-    const imageUrl = `https://image.tmdb.org/t/p/w500${posterPath}`;
+    const imageUrl = `https://image.tmdb.org/t/p/w200${posterPath}`;
     return (
-        <div>
-            <h1>{title}</h1>
+        <div className="movie-card">
+            <h3>{title}</h3>
             <img src={imageUrl} alt={title}/>
-            <h3>{overView}</h3>
+            <p>{overView}</p>
         </div>
     )
 }

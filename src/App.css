@@ -40,3 +40,53 @@
 .read-the-docs {
   color: #888;
 }
+
+.recommended-container {
+  display: flex;
+  gap: 16px; /* space between cards */
+  overflow-x: auto; /* enable horizontal scroll */
+  padding: 16px;
+  scroll-behavior: smooth; /* smooth scrolling when using JS or scrollbar */
+  
+  /* Optional: hide vertical scrollbar */
+  scrollbar-width: thin; /* Firefox */
+}
+
+.recommended-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.recommended-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.3);
+  border-radius: 4px;
+}
+
+.movie-card {
+  flex: 0 0 auto; /* don’t shrink, maintain width */
+  width: 150px; /* card width */
+  text-align: center;
+}
+
+.user-card {
+  display: inline-block;
+  padding: 12px 20px;
+  margin: 8px;
+  background-color: #3d3d3d; /* light gray */
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  font-weight: 500;
+  font-size: 1rem;
+  text-align: center;
+  user-select: none; /* prevents text selection on click */
+}
+
+.user-card:hover {
+  background-color: #727272;
+  transform: translateY(-2px); /* slight lift effect */
+}
+
+.user-card:active {
+  background-color: #d0d0d0;
+  transform: translateY(0); /* press effect */
+}
