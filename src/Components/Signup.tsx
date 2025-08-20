@@ -5,6 +5,7 @@ type SignUpProps = {
   changeJwt: (change: string) => void;
 }
 
+
 type errorResponse = {
     code: string,
     description: string
