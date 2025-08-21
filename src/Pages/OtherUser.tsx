@@ -34,7 +34,7 @@ const OtherUser : React.FC<OtherUserProps> = ({jwt}) => {
             <h1>{userData.userName}</h1>
             {userData.userMovies.map((movie : MovieType) => {
                 return(
-                    <Movie title={movie.title} posterPath={movie.posterPath} overView={movie.overView}/>
+                    <Movie title={movie.title} posterPath={movie.posterPath} overView={movie.overView} status = {movie.status}/>
                     //AHUSDHUFSHD IMMA busT look at that REUSABILITY (I LOVE SCALABLE CLEAN CODEE!!!)
                 )
             })}

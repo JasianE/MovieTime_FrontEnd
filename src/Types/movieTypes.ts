@@ -1,5 +1,6 @@
 export type MovieType = {
     title: string,
     overView: string,
-    posterPath: string
+    posterPath: string,
+    status: number
 }

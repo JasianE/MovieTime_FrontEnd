@@ -24,10 +24,21 @@ const Dashboard : React.FC<DashboardProps> = ({jwt}) => {
 
     return(
         <div>
-            Movies recommended to you:
+            Movies recommended to you that you havent watched:
             <div className="recommended-container">
                 {movies.map((movie : MovieType) => {
-                    return(<Movie title={movie.title} posterPath={movie.posterPath} overView={movie.overView}/>)
+                    if(movie.status == 0){
+                        return(<Movie title={movie.title} posterPath={movie.posterPath} overView={movie.overView} status={movie.status}/>)
+                    }
+                })}
+            </div>
+
+            Movies recommended to you that you HAVE watched:
+            <div className="recommended-container">
+                {movies.map((movie : MovieType) => {
+                    if(movie.status == 1){
+                        return(<Movie title={movie.title} posterPath={movie.posterPath} overView={movie.overView} status={movie.status}/>)
+                    }
                 })}
             </div>
             Search For Other Users:

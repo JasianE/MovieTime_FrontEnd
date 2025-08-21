@@ -32,7 +32,6 @@ export async function AddMovieToUser(userName : string , jwt: string, movieName:
             return await res.json();
         }
     } catch(err){
-        console.log(err)
         return("Error");
     }
 }

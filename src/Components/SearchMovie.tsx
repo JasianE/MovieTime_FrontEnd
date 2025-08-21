@@ -11,6 +11,7 @@ const SearchMovie : React.FC<SearchMovieProps> = ({user, jwt}) =>{
     const [query, setQuery] = useState("");
     const [results, setResults] = useState<MovieType[]>([]);
     const [showDropDown, setShowDropDown] = useState(false);
+    const [result, setResult] = useState('');
 
     useEffect(() => { // queries api on every search query change
         if(query.length < 2){
@@ -28,19 +29,22 @@ const SearchMovie : React.FC<SearchMovieProps> = ({user, jwt}) =>{
         }
     }, [query])
 
-    console.log(user);
-
     function handleSubmit(){
         //Ok so i guess pass in the user as props to this method
         //And then boom you pass that in and then this will work (just call the add movie to other user endpoint on .net)
         //And then we get a movie recommendation app!
         AddMovieToUser(user.userName, jwt, query)
         .then((data) => {
-            console.log(data); // do some handling w/ ui and stuff
+            if(typeof data == "string"){
+                setResult(data);
+            } else {
+                setResult("Sucessfully added new user.") // if its not a string it aint an error and i dont wanna deal with json types right now
+             }
         })
     }
     return (
         <>
+            {result ? result : null}
             <div style={{ position: "relative", width: "300px" }}>
             <input
                 type="text"
