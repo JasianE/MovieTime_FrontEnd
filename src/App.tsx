@@ -10,12 +10,17 @@ import OtherUser from './Pages/OtherUser';
 
 function App() {
   const [jwt, setJwt] = useState('');
-  //TODO NOW!
-  //I need to make a feature to get ALL USERS and then make a user page, displaying that user's movies
+  //TODO NOW! -- Features to be implemeneted
+  //I need to make a feature to get ALL USERS and then make a user page, displaying that user's movies -- Done!
   //I ALSO need to add the feature of adding movies to another user
   // I ALSO need to add the feature of changing a movie's status to watched (i think imma need to change the api)
   //Thats it!
 
+  //Refactors TODO
+  //Need to refactor for keeping track of who recommended who what
+
+  // Current bugs
+  // In other users, the current user is also displayed
   function ChangeJwt(change: string){
     setJwt(change);
   }
