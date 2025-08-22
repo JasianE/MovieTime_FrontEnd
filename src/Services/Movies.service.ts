@@ -13,7 +13,6 @@ export async function QueryMovies(query: string){
 }
 
 export async function AddMovieToUser(userName : string , jwt: string, movieName: string){
-    console.log(userName, jwt, movieName)
     try {
         const res = await fetch('http://localhost:5245/api/usermovie', {
             method: "POST",
@@ -25,6 +24,25 @@ export async function AddMovieToUser(userName : string , jwt: string, movieName:
                 userName: userName,
                 movieName: movieName
             })
+        })
+        if(res.ok){
+            return await res.json();
+        } else {
+            return await res.json();
+        }
+    } catch(err){
+        return("Error");
+    }
+}
+
+export async function ChangeMovieStatus(movieName: string, jwt: string){
+    try {
+        const res = await fetch(`http://localhost:5245/api/usermovie/update/${movieName}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`
+            },
         })
         if(res.ok){
             return await res.json();

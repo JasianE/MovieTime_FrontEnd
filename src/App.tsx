@@ -21,6 +21,8 @@ function App() {
 
   // Current bugs
   // In other users, the current user is also displayed
+  //In other users, if the movie is not watched you can also have them have it watched
+  //In your dashboard, it doesn't refresh, not a big deal but it would be nice to see it change IRL
   function ChangeJwt(change: string){
     setJwt(change);
   }
