@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 
 type UsersProps = {
     jwt: string
+    currentUserName: string
 }
 
-const Users : React.FC<UsersProps> = ({jwt}) => {
+const Users : React.FC<UsersProps> = ({jwt, currentUserName}) => {
     const navigate = useNavigate();
     const [users, setUsers] = useState([]);
 
@@ -24,9 +25,11 @@ const Users : React.FC<UsersProps> = ({jwt}) => {
     return (
         <div>
             {users.map((user) => {
-                return (
-                    <Usercard user={user} handle={handleClick}/> // Maps all users in card for redirecting
-                )
+                if(user["userName"] != currentUserName){
+                    return (
+                        <Usercard user={user} handle={handleClick}/> // Maps all users in card for redirecting
+                    )
+                }
             })}
         </div>
     )

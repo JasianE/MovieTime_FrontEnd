@@ -4,16 +4,20 @@ import { ChangeMovieStatus } from "../Services/Movies.service";
 
 type movieProps = {
     movie: MovieType,
-    jwt: string
+    jwt: string,
+    refresh ? : () => void // optional method for changing status
 }
 
-const Movie : React.FC<movieProps> = ({movie, jwt}) => {
+const Movie : React.FC<movieProps> = ({movie, jwt, refresh}) => {
     const imageUrl = `https://image.tmdb.org/t/p/w200${movie.posterPath}`;
 
     function handleClick(){
         ChangeMovieStatus(movie.title, jwt)
         .then((data) => {
             console.log(data)
+            if(refresh){
+                refresh()
+            }
         })
     }
 

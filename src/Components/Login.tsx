@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 type LoginProps = {
   changeJwt: (change: string) => void;
+  changeUserName: (change: string) => void;
 }
 
-const Login : React.FC<LoginProps> = ({changeJwt}) => {
+const Login : React.FC<LoginProps> = ({changeJwt, changeUserName}) => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({username: "", password: ""});
     const [error, setError] = useState('');
@@ -30,6 +31,7 @@ const Login : React.FC<LoginProps> = ({changeJwt}) => {
         } else {
           const data = await res.json();
           changeJwt(data.token);
+          changeUserName(formData.username);
           navigate("/dashboard");
         }
       } catch(err){

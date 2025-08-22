@@ -14,13 +14,19 @@ const Dashboard : React.FC<DashboardProps> = ({jwt}) => {
     const navigate = useNavigate();
     
     const [movies, setMovies] = useState([])
+    const [forceResetCounter, setForceResetCounter] = useState(0);
 
     useEffect(() => {
         GetAllUserMovies(jwt)
         .then((stuff) => {
             setMovies(stuff);
         })
-    }, [])
+    }, [forceResetCounter])
+
+    function refresh(){
+        const newVal = forceResetCounter + 1;
+        setForceResetCounter(newVal)
+    }
 
     return(
         <div>
@@ -28,7 +34,7 @@ const Dashboard : React.FC<DashboardProps> = ({jwt}) => {
             <div className="recommended-container">
                 {movies.map((movie : MovieType) => {
                     if(movie.status == 0){
-                        return(<Movie movie={movie} jwt={jwt}/>)
+                        return(<Movie movie={movie} jwt={jwt} refresh= {refresh}/>)
                     }
                 })}
             </div>
@@ -37,7 +43,7 @@ const Dashboard : React.FC<DashboardProps> = ({jwt}) => {
             <div className="recommended-container">
                 {movies.map((movie : MovieType) => {
                     if(movie.status == 1){
-                        return(<Movie movie={movie} jwt={jwt}/>)
+                        return(<Movie movie={movie} jwt={jwt} refresh={refresh}/>)
                     }
                 })}
             </div>

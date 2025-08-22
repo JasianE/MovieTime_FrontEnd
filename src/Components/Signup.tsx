@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 type SignUpProps = {
   changeJwt: (change: string) => void;
+  changeUserName: (change: string) => void;
 }
 
-const SignUp : React.FC<SignUpProps> = ({changeJwt}) => {
+const SignUp : React.FC<SignUpProps> = ({changeJwt, changeUserName}) => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({username: "", password: "", email: ""});
     const [error, setError] = useState('');
@@ -34,6 +35,7 @@ const SignUp : React.FC<SignUpProps> = ({changeJwt}) => {
           const data = await res.json();
           setError('');
           changeJwt(data.token);
+          changeUserName(formData.username);
           navigate("/dashboard")
         }
       } catch(err){
@@ -42,7 +44,7 @@ const SignUp : React.FC<SignUpProps> = ({changeJwt}) => {
     }
     return (
     <div className="max-w-md mx-auto p-4 border rounded-lg shadow">
-      <h2 className="text-xl font-bold mb-4">Log in</h2>
+      <h2 className="text-xl font-bold mb-4">Sign Up</h2>
     {error}
       
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">

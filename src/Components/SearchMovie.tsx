@@ -22,7 +22,7 @@ const SearchMovie : React.FC<SearchMovieProps> = ({user, jwt}) =>{
                 if(typeof data == "string"){
                     console.log("error")
                 } else {
-                    setResults(data ?? [])
+                    setResults(data ?? []) // if nothing, we don't set anything, done to bypass ts syntax (im evil)
                     setShowDropDown(true);
                 }
             })
@@ -38,7 +38,7 @@ const SearchMovie : React.FC<SearchMovieProps> = ({user, jwt}) =>{
             if(typeof data == "string"){
                 setResult(data);
             } else {
-                setResult("Sucessfully added new user.") // if its not a string it aint an error and i dont wanna deal with json types right now
+                setResult("Sucessfully added new movie.") // if its not a string it aint an error and i dont wanna deal with json types right now
              }
         })
     }
@@ -83,7 +83,6 @@ const SearchMovie : React.FC<SearchMovieProps> = ({user, jwt}) =>{
                         borderBottom: "1px solid #eee",
                     }}
                     onMouseDown={() => {
-                        console.log("Selected movie:", movie);
                         setQuery(movie.title);
                         setShowDropDown(false);
                     }}
@@ -94,7 +93,7 @@ const SearchMovie : React.FC<SearchMovieProps> = ({user, jwt}) =>{
                 </ul>
             )}
             </div>
-            <button onClick={handleSubmit}>
+            <button onClick={handleSubmit}> {/*Ideally refactor this to have this outside of this component and into the otherUser page instead so this becomes more versatile */}
                 Submit Request!
             </button>
         </>
