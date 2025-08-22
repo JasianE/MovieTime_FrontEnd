@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import type { MovieType } from "../Types/movieTypes";
-import { AddMovieToUser, QueryMovies } from "../Services/Movies.service";
-import type { UserFullType } from "../Types/user";
+import { QueryMovies } from "../Services/Movies.service";
 
 type SearchMovieProps = {
     query: string
@@ -32,43 +31,21 @@ const SearchMovie : React.FC<SearchMovieProps> = ({changeQuery, query}) =>{
     return (
         <>
             {result ? result : null}
-            <div style={{ position: "relative", width: "300px" }}>
+            <div className="search-dropdown">
             <input
                 type="text"
                 value={query}
                 placeholder="Search movies..."
                 onChange={(e) => changeQuery(e.target.value)}
                 onFocus={() => query.length >= 2 && setShowDropDown(true)}
-                onBlur={() => setTimeout(() => setShowDropDown(false), 200)} // delay so clicks register
-                style={{ width: "100%", padding: "8px" }}
+                onBlur={() => setTimeout(() => setShowDropDown(false), 200)}
             />
-        
+    
             {showDropDown && results.length > 0 && (
-                <ul
-                style={{
-                    position: "absolute",
-                    top: "100%",
-                    left: 0,
-                    right: 0,
-                    background: "blue",
-                    border: "1px solid #ddd",
-                    borderRadius: "4px",
-                    marginTop: "4px",
-                    listStyle: "none",
-                    padding: 0,
-                    maxHeight: "200px",
-                    overflowY: "auto",
-                    zIndex: 1000,
-                }}
-                >
+                <ul>
                 {results.map((movie) => (
                     <li
                     key={movie.title}
-                    style={{
-                        padding: "8px",
-                        cursor: "pointer",
-                        borderBottom: "1px solid #eee",
-                    }}
                     onMouseDown={() => {
                         changeQuery(movie.title);
                         setShowDropDown(false);

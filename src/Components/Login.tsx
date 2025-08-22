@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
+import '../App.css'
 
 type LoginProps = {
   changeJwt: (change: string) => void;
@@ -43,7 +44,7 @@ const Login : React.FC<LoginProps> = ({changeJwt, changeUserName}) => {
       <h2 className="text-xl font-bold mb-4">Log in</h2>
     {error}
       
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+      <form onSubmit={handleSubmit} className="form-container">
         <input
           type="text"
           name="username"

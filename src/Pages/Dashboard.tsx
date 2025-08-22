@@ -29,9 +29,9 @@ const Dashboard : React.FC<DashboardProps> = ({jwt}) => {
     }
 
     return(
-        <div>
-            Movies recommended to you that you havent watched:
-            <div className="recommended-container">
+        <div className="dashboard">
+            <h2 className="row-title">Movies recommended to you that you havent watched:</h2>
+            <div className="movie-row">
                 {movies.map((movie : MovieType) => {
                     if(movie.status == 0){
                         return(<Movie movie={movie} jwt={jwt} refresh= {refresh}/>)
@@ -39,16 +39,15 @@ const Dashboard : React.FC<DashboardProps> = ({jwt}) => {
                 })}
             </div>
 
-            Movies recommended to you that you HAVE watched:
-            <div className="recommended-container">
+            <h2 className="row-title">Movies recommended to you that you HAVE watched:</h2>
+            <div className="movie-row">
                 {movies.map((movie : MovieType) => {
                     if(movie.status == 1){
                         return(<Movie movie={movie} jwt={jwt} refresh={refresh}/>)
                     }
                 })}
             </div>
-            Search For Other Users:
-            <button onClick={() => {navigate('/Users')}}>Click me for other users</button>
+            <button className= "users-button" onClick={() => {navigate('/Users')}}>Click me to recommend movies to other users</button>
         </div>
     )
 }

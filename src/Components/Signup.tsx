@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
+import "../App.css"
 
 type SignUpProps = {
   changeJwt: (change: string) => void;
@@ -47,7 +48,7 @@ const SignUp : React.FC<SignUpProps> = ({changeJwt, changeUserName}) => {
       <h2 className="text-xl font-bold mb-4">Sign Up</h2>
     {error}
       
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+      <form onSubmit={handleSubmit} className="form-container">
         <input
           type="text"
           name="username"

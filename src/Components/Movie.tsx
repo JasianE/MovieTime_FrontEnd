@@ -6,9 +6,10 @@ type movieProps = {
     movie: MovieType,
     jwt: string,
     refresh ? : () => void // optional method for changing status
+    isOtherUserView ? : boolean
 }
 
-const Movie : React.FC<movieProps> = ({movie, jwt, refresh}) => {
+const Movie : React.FC<movieProps> = ({movie, jwt, refresh, isOtherUserView}) => {
     const imageUrl = `https://image.tmdb.org/t/p/w200${movie.posterPath}`;
 
     function handleClick(){
@@ -23,12 +24,24 @@ const Movie : React.FC<movieProps> = ({movie, jwt, refresh}) => {
 
     return (
         <div className="movie-card">
-            <h3>{movie.title}</h3>
-            <img src={imageUrl} alt={movie.title}/>
-            <p>{movie.overView}</p>
-            {movie.status == 0 ? <button onClick={handleClick}>Watched!</button> : null}
+            <div className="movie-card-inner">
+                {/* FRONT */}
+                <div className="movie-card-front">
+                <img src={imageUrl} alt={movie.title} />
+                <h3>{movie.title}</h3>
+                </div>
+
+                {/* BACK */}
+                <div className="movie-card-back">
+                <h3>{movie.title}</h3>
+                <p>{movie.overView}</p>
+                {movie.status === 0 && (
+                    isOtherUserView ? null : <button onClick={handleClick}>Watched!</button>
+                )}
+                </div>
+            </div>
         </div>
     )
 }
 
-export default Movie
+export default Movie;
