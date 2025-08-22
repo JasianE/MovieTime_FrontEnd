@@ -5,6 +5,7 @@ import type { UserFullType } from "../Types/user";
 import Movie from "../Components/Movie";
 import type { MovieType } from "../Types/movieTypes";
 import SearchMovie from "../Components/SearchMovie";
+import { AddMovieToUser } from "../Services/Movies.service";
 
 type OtherUserProps = {
     jwt: string
@@ -16,6 +17,9 @@ const OtherUser : React.FC<OtherUserProps> = ({jwt}) => {
         id: '',
         userMovies: []
     });
+    const [query, setQuery] = useState(''); // single source of truth type shit
+    const [result, setResult] = useState('');
+
     useEffect(() => {
         if(typeof id == "string"){
             GetUserById(id, jwt)
@@ -23,7 +27,25 @@ const OtherUser : React.FC<OtherUserProps> = ({jwt}) => {
                 setUserData(data)
             })
         }
-    }, [])
+    }, [result])
+
+    function handleSubmit(){
+            //Ok so i guess pass in the user as props to this method
+            //And then boom you pass that in and then this will work (just call the add movie to other user endpoint on .net)
+            //And then we get a movie recommendation app!
+            AddMovieToUser(userData.userName, jwt, query)
+            .then((data) => {
+                if(typeof data == "string"){
+                    setResult(data);
+                } else {
+                    setResult("Sucessfully added new movie.") // if its not a string it aint an error and i dont wanna deal with json types right now
+                 }
+            })
+        }
+
+    function changeQuery(queried: string){
+        setQuery(queried);
+    }
 
     //Should i make an endpoint in my api for adding a movie thats like this?
     //if the movie exists in database, just add that directly, if not, scour the tmdb api to add that to our database
@@ -52,7 +74,11 @@ const OtherUser : React.FC<OtherUserProps> = ({jwt}) => {
             })}
             
             <h2>Add a movie recommendation to {userData.userName}!</h2>
-            <SearchMovie user={userData} jwt={jwt}/>
+            {result}
+            <SearchMovie changeQuery = {changeQuery} query={query}/>
+            <button onClick={handleSubmit}> {/*Ideally refactor this to have this outside of this component and into the otherUser page instead so this becomes more versatile --> i did it now its better*/}
+                Submit Request!
+            </button>
         </div>
              
     )

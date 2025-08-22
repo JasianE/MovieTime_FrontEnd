@@ -4,16 +4,16 @@ import { AddMovieToUser, QueryMovies } from "../Services/Movies.service";
 import type { UserFullType } from "../Types/user";
 
 type SearchMovieProps = {
-    user: UserFullType,
-    jwt: string
+    query: string
+    changeQuery: (queried: string) => void,
 }
-const SearchMovie : React.FC<SearchMovieProps> = ({user, jwt}) =>{
-    const [query, setQuery] = useState("");
+const SearchMovie : React.FC<SearchMovieProps> = ({changeQuery, query}) =>{
     const [results, setResults] = useState<MovieType[]>([]);
     const [showDropDown, setShowDropDown] = useState(false);
     const [result, setResult] = useState('');
 
     useEffect(() => { // queries api on every search query change
+        
         if(query.length < 2){
             setResults([]);
         } else {
@@ -29,19 +29,6 @@ const SearchMovie : React.FC<SearchMovieProps> = ({user, jwt}) =>{
         }
     }, [query])
 
-    function handleSubmit(){
-        //Ok so i guess pass in the user as props to this method
-        //And then boom you pass that in and then this will work (just call the add movie to other user endpoint on .net)
-        //And then we get a movie recommendation app!
-        AddMovieToUser(user.userName, jwt, query)
-        .then((data) => {
-            if(typeof data == "string"){
-                setResult(data);
-            } else {
-                setResult("Sucessfully added new movie.") // if its not a string it aint an error and i dont wanna deal with json types right now
-             }
-        })
-    }
     return (
         <>
             {result ? result : null}
@@ -50,7 +37,7 @@ const SearchMovie : React.FC<SearchMovieProps> = ({user, jwt}) =>{
                 type="text"
                 value={query}
                 placeholder="Search movies..."
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => changeQuery(e.target.value)}
                 onFocus={() => query.length >= 2 && setShowDropDown(true)}
                 onBlur={() => setTimeout(() => setShowDropDown(false), 200)} // delay so clicks register
                 style={{ width: "100%", padding: "8px" }}
@@ -83,7 +70,7 @@ const SearchMovie : React.FC<SearchMovieProps> = ({user, jwt}) =>{
                         borderBottom: "1px solid #eee",
                     }}
                     onMouseDown={() => {
-                        setQuery(movie.title);
+                        changeQuery(movie.title);
                         setShowDropDown(false);
                     }}
                     >
@@ -93,9 +80,6 @@ const SearchMovie : React.FC<SearchMovieProps> = ({user, jwt}) =>{
                 </ul>
             )}
             </div>
-            <button onClick={handleSubmit}> {/*Ideally refactor this to have this outside of this component and into the otherUser page instead so this becomes more versatile */}
-                Submit Request!
-            </button>
         </>
       );
     
