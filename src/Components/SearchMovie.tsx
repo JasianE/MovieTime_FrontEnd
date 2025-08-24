@@ -9,7 +9,6 @@ type SearchMovieProps = {
 const SearchMovie : React.FC<SearchMovieProps> = ({changeQuery, query}) =>{
     const [results, setResults] = useState<MovieType[]>([]);
     const [showDropDown, setShowDropDown] = useState(false);
-    const [result, setResult] = useState('');
 
     useEffect(() => { // queries api on every search query change
         
@@ -30,7 +29,6 @@ const SearchMovie : React.FC<SearchMovieProps> = ({changeQuery, query}) =>{
 
     return (
         <>
-            {result ? result : null}
             <div className="search-dropdown">
             <input
                 type="text"
