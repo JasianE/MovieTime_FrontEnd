@@ -11,6 +11,7 @@ const Login : React.FC<LoginProps> = ({changeJwt, changeUserName}) => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({username: "", password: ""});
     const [error, setError] = useState('');
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
@@ -20,7 +21,7 @@ const Login : React.FC<LoginProps> = ({changeJwt, changeUserName}) => {
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       try {
-        const res = await fetch("http://localhost:5245/api/account/login", {
+        const res = await fetch(API_URL + "api/account/login", { // refactor this to put into services instead bruh
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify(formData)

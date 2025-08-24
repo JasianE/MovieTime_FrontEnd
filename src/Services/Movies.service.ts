@@ -1,8 +1,9 @@
 import type { MovieType } from "../Types/movieTypes";
 
 export async function QueryMovies(query: string){
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
     try { 
-        const res = await fetch(`http://localhost:5245/api/movie/all?title=${query}`);
+        const res = await fetch(`${API_URL}/api/movie/all?title=${query}`);
         if (res.ok){
             const data: MovieType[] = await res.json();
             return data;
@@ -13,8 +14,9 @@ export async function QueryMovies(query: string){
 }
 
 export async function AddMovieToUser(userName : string , jwt: string, movieName: string){
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
     try {
-        const res = await fetch('http://localhost:5245/api/usermovie', {
+        const res = await fetch(API_URL +  '/api/usermovie', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -36,8 +38,10 @@ export async function AddMovieToUser(userName : string , jwt: string, movieName:
 }
 
 export async function ChangeMovieStatus(movieName: string, jwt: string){
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
     try {
-        const res = await fetch(`http://localhost:5245/api/usermovie/update/${movieName}`, {
+        const res = await fetch(`${API_URL}/api/usermovie/update/${movieName}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
