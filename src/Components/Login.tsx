@@ -21,7 +21,7 @@ const Login : React.FC<LoginProps> = ({changeJwt, changeUserName}) => {
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       try {
-        const res = await fetch(API_URL + "api/account/login", { // refactor this to put into services instead bruh
+        const res = await fetch(API_URL + "/api/account/login", { // refactor this to put into services instead bruh
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify(formData)
