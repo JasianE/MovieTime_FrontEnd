@@ -5,7 +5,7 @@ import { ChangeMovieStatus } from "../Services/Movies.service";
 type movieProps = {
     movie: MovieType,
     jwt: string,
-    refresh ? : () => void // optional method for changing status
+    refresh ? : () => void // optional method for changing status, deals with changing state
     isOtherUserView ? : boolean
 }
 
@@ -14,10 +14,9 @@ const Movie : React.FC<movieProps> = ({movie, jwt, refresh, isOtherUserView}) =>
 
     function handleClick(){
         ChangeMovieStatus(movie.title, jwt)
-        .then((data) => {
-            console.log(data)
+        .then(() => {
             if(refresh){
-                refresh()
+                refresh() // only occurs appears in your dashboard
             }
         })
     }

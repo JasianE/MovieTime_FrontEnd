@@ -142,6 +142,13 @@
   background-color: #1c1c1c;
   color: white;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  
+}
+.movie-row-container { /* or whatever width you want, e.g. Netflix uses ~80% */
+  width: 95%;
+  max-width: 800px; /* constrain the width */
 }
 
 /* Row title */
@@ -158,6 +165,8 @@
   gap: 1rem;
   padding-bottom: 1rem;
   scroll-behavior: smooth;
+  width: max-content;   /* only as wide as its content */
+  max-width: 100%;
 }
 
 /* Hide scrollbar (optional) */
@@ -170,6 +179,7 @@
   width: 180px;
   height: 280px;
   perspective: 1000px;
+  flex: 0 0 auto; /* important! prevent cards from shrinking or stretching */
 }
 
 .movie-card-inner {

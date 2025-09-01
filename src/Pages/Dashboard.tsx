@@ -31,21 +31,25 @@ const Dashboard : React.FC<DashboardProps> = ({jwt}) => {
     return(
         <div className="dashboard">
             <h2 className="row-title">Movies recommended to you that you havent watched:</h2>
-            <div className="movie-row">
-                {movies.map((movie : MovieType) => {
-                    if(movie.status == 0){
-                        return(<Movie movie={movie} jwt={jwt} refresh= {refresh}/>)
-                    }
-                })}
+            <div className="movie-row-container">
+                <div className="movie-row">
+                    {movies.map((movie : MovieType) => {
+                        if(movie.status == 0){
+                            return(<Movie movie={movie} jwt={jwt} refresh= {refresh}/>)
+                        }
+                    })}
+                </div>
             </div>
 
             <h2 className="row-title">Movies recommended to you that you HAVE watched:</h2>
-            <div className="movie-row">
-                {movies.map((movie : MovieType) => {
-                    if(movie.status == 1){
-                        return(<Movie movie={movie} jwt={jwt} refresh={refresh}/>)
-                    }
-                })}
+            <div className="movie-row-container">
+                <div className="movie-row">
+                    {movies.map((movie : MovieType) => {
+                        if(movie.status == 1){
+                            return(<Movie movie={movie} jwt={jwt} refresh={refresh}/>)
+                        }
+                    })}
+                </div>
             </div>
             <button className= "users-button" onClick={() => {navigate('/Users')}}>Click me to recommend movies to other users</button>
         </div>
