@@ -12,9 +12,13 @@ This project communicates with the MovieTime backend (.NET Web API) to provide m
 
 ## Folder Structure
 src/
-├── assets/ # Static files (images, icons, styles)
-├── components/ # Reusable UI components
-├── pages/ # Route-based components (Home, Movies, Recommendations, etc.)
-├── services/ # API call logic
-├── App.tsx # Root component and route definitions
-├── main.tsx # Application entry point
+├── Components/      # Reusable UI components (movie rows, cards, navigation, etc.)
+├── Pages/           # Page-level components (Login, Signup, Dashboard, etc.)
+├── Services/        # API call logic and integration
+├── Types/           # TypeScript type definitions
+├── assets/          # Static files (images, icons, styles)
+├── App.css          # Global styles
+├── App.tsx          # Root component with route definitions
+├── index.css        # Base CSS
+├── main.tsx         # Application entry point
+└── vite-env.d.ts    # Vite TypeScript environment definitions
