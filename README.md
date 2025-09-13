@@ -3,6 +3,19 @@
 The frontend for the MovieTime application. Built with React, Vite, and TypeScript.  
 This project communicates with the MovieTime backend (.NET Web API) to provide movie data and recommendations.
 
+## Tech Stack
+- React 18
+
+- TypeScript
+
+- Vite
+
+- React Router
+
+- Axios/Fetch for HTTP requests
+
+- .NET Backend API
+
 ## Features
 - Fast build and development with Vite
 - Type-safe components with TypeScript
@@ -10,9 +23,11 @@ This project communicates with the MovieTime backend (.NET Web API) to provide m
 - Responsive UI for browsing and viewing recommendations
 - API integration with a .NET backend
 
-## Folder Structure
+## `src/` folder
+
+```bash
 src/
-├── Components/      # Reusable UI components (movie rows, cards, navigation, etc.)
+├── Components/      # Reusable UI components (movie rows, cards, navigation)
 ├── Pages/           # Page-level components (Login, Signup, Dashboard, etc.)
 ├── Services/        # API call logic and integration
 ├── Types/           # TypeScript type definitions
@@ -22,3 +37,5 @@ src/
 ├── index.css        # Base CSS
 ├── main.tsx         # Application entry point
 └── vite-env.d.ts    # Vite TypeScript environment definitions
+```
+
