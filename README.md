@@ -31,4 +31,7 @@ src/
 ├── main.tsx         # Application entry point
 └── vite-env.d.ts    # Vite TypeScript environment definitions
 ```
-
+## Future Improvements
+- User comments / movie comments
+- Rating system
+- Group movie recommendations (I want to add feature that would be like groups / servers for discord)
