@@ -1,7 +1,20 @@
 # MovieTime Frontend
 
-The code for the frontend of the MovieTime app. Created using Vite and TypeScript, using the react-router library for routing.
+The frontend for the MovieTime application. Built with React, Vite, and TypeScript.  
+This project communicates with the MovieTime backend (.NET Web API) to provide movie data and recommendations.
 
-## Prerequisites
+## Features
+- Fast build and development with Vite
+- Type-safe components with TypeScript
+- Client-side routing using React Router
+- Responsive UI for browsing and viewing recommendations
+- API integration with a .NET backend
 
-React
+## Folder Structure
+src/
+├── assets/ # Static files (images, icons, styles)
+├── components/ # Reusable UI components
+├── pages/ # Route-based components (Home, Movies, Recommendations, etc.)
+├── services/ # API call logic
+├── App.tsx # Root component and route definitions
+├── main.tsx # Application entry point
