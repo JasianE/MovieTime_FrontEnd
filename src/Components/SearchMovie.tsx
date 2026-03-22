@@ -31,6 +31,7 @@ const SearchMovie : React.FC<SearchMovieProps> = ({changeQuery, query}) =>{
         <>
             <div className="search-dropdown">
             <input
+                className="search-input"
                 type="text"
                 value={query}
                 placeholder="Search movies..."
@@ -40,10 +41,11 @@ const SearchMovie : React.FC<SearchMovieProps> = ({changeQuery, query}) =>{
             />
     
             {showDropDown && results.length > 0 && (
-                <ul>
+                <ul className="search-results">
                 {results.map((movie) => (
                     <li
                     key={movie.title}
+                    className="search-result-item"
                     onMouseDown={() => {
                         changeQuery(movie.title);
                         setShowDropDown(false);

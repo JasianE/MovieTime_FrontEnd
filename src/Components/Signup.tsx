@@ -28,67 +28,88 @@ const SignUp : React.FC<SignUpProps> = ({changeJwt, changeUserName}) => {
         });
 
         if(!res.ok) {
+          const contentType = res.headers.get("content-type") || "";
+          let message = "Signup failed. Please check the form and try again.";
 
-          const msg = await res.json();
-          const errors = msg.map((item: { description: any; }) => item.description)
-          const error = errors.join(" ")
-          setError(error); // creates an error message w/ all the errors
-        } else {
-          const data = await res.json();
-          setError('');
-          changeJwt(data.token);
-          changeUserName(formData.username);
-          navigate("/dashboard")
+          if (contentType.includes("application/json")) {
+            const payload = await res.json();
+            if (Array.isArray(payload)) {
+              const errors = payload.map((item: { description?: string }) => item.description).filter(Boolean);
+              if (errors.length) {
+                message = errors.join(" ");
+              }
+            } else if (typeof payload === "string") {
+              message = payload;
+            } else if (payload?.message) {
+              message = payload.message;
+            }
+          } else {
+            const text = await res.text();
+            if (text) {
+              message = text;
+            }
+          }
+
+          setError(message);
+          return;
         }
+
+        const data = await res.json();
+        setError("");
+        changeJwt(data.token);
+        changeUserName(formData.username);
+        navigate("/dashboard")
       } catch(err){
-        setError("Error has occured.");
+        setError("Signup failed. Please try again in a moment.");
       }
     }
     return (
-    <div className="max-w-md mx-auto p-4 border rounded-lg shadow">
-      <h2 className="text-xl font-bold mb-4">Sign Up</h2>
-    {error}
-      
-      <form onSubmit={handleSubmit} className="form-container">
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleChange}
-          className="p-2 border rounded"
-          required
-        />
+      <div className="auth-card">
+        <h2>Sign up</h2>
+        {error && <p className="form-error">{error}</p>}
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          className="p-2 border rounded"
-          required
-        />
+        <form onSubmit={handleSubmit} className="form-stack">
+          <label className="field">
+            <span>Username</span>
+            <input
+              type="text"
+              name="username"
+              placeholder="Your handle"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          className="p-2 border rounded"
-          required
-        />
+          <label className="field">
+            <span>Email</span>
+            <input
+              type="email"
+              name="email"
+              placeholder="you@example.com"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
+          <label className="field">
+            <span>Password</span>
+            <input
+              type="password"
+              name="password"
+              placeholder="Create a password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <button
-          type="submit"
-          className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-        >
-          Join the movie pit
-        </button>
-      </form>
-    </div>
+          <button type="submit" className="btn btn-primary btn-block">
+            Join the movie pit
+          </button>
+        </form>
+      </div>
     )
 }
 

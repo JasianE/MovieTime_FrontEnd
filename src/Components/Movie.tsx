@@ -24,19 +24,24 @@ const Movie : React.FC<movieProps> = ({movie, jwt, refresh, isOtherUserView}) =>
     return (
         <div className="movie-card">
             <div className="movie-card-inner">
-                {/* FRONT */}
                 <div className="movie-card-front">
-                <img src={imageUrl} alt={movie.title} />
-                <h3>{movie.title}</h3>
+                    <img src={imageUrl} alt={movie.title} />
+                    <div className="movie-card-meta">
+                        <h3>{movie.title}</h3>
+                        <span className="pill">Recommended</span>
+                    </div>
                 </div>
 
-                {/* BACK */}
                 <div className="movie-card-back">
-                <h3>{movie.title}</h3>
-                <p>{movie.overView}</p>
-                {movie.status === 0 && (
-                    isOtherUserView ? null : <button onClick={handleClick}>Watched!</button>
-                )}
+                    <h3>{movie.title}</h3>
+                    <p>{movie.overView}</p>
+                    {movie.status === 0 && (
+                        isOtherUserView ? null : (
+                            <button className="btn btn-ghost" onClick={handleClick}>
+                                Mark as watched
+                            </button>
+                        )
+                    )}
                 </div>
             </div>
         </div>

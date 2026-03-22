@@ -7,9 +7,15 @@ type UserCardProps = {
 }
 
 const Usercard: React.FC<UserCardProps> = ({user, handle}) => {
+    const initial = user.userName.charAt(0).toUpperCase();
+
     return (
-        <div className="user-card" onClick={() => {handle(user.id)}}> {/*Redirects to otheruser page to fetch more user data and display on dedicated page */}
-            <h2>{user.userName}</h2>
+        <div className="user-card" onClick={() => {handle(user.id)}}>
+            <div className="user-avatar">{initial}</div>
+            <div>
+                <h2>{user.userName}</h2>
+                <p className="muted">Send a recommendation</p>
+            </div>
         </div>
     )
 }

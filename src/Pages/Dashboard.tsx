@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import GetAllUserMovies from "../Services/UserMovie.service";
 import Movie from "../Components/Movie";
 import type { MovieType } from "../Types/movieTypes";
@@ -8,50 +8,82 @@ import "../App.css"
 
 type DashboardProps = {
     jwt: string
+    onLogout: () => void
 }
 
-const Dashboard : React.FC<DashboardProps> = ({jwt}) => {
+const Dashboard : React.FC<DashboardProps> = ({jwt, onLogout}) => {
     const navigate = useNavigate();
     
-    const [movies, setMovies] = useState([])
+    const [movies, setMovies] = useState<MovieType[]>([])
     const [forceResetCounter, setForceResetCounter] = useState(0);
+    const requestIdRef = useRef(0);
 
     useEffect(() => {
+        let isActive = true;
+        const currentRequestId = ++requestIdRef.current;
+
         GetAllUserMovies(jwt)
         .then((stuff) => {
-            setMovies(stuff);
+            if (isActive && currentRequestId === requestIdRef.current) {
+                setMovies(stuff);
+            }
         })
-    }, [forceResetCounter])
+        .catch(() => {
+            // Optional: surface error state later if needed.
+        });
+
+        return () => {
+            isActive = false;
+        };
+    }, [forceResetCounter, jwt])
 
     function refresh(){
-        const newVal = forceResetCounter + 1;
-        setForceResetCounter(newVal)
+        setForceResetCounter((value) => value + 1);
     }
 
-    return(
-        <div className="dashboard">
-            <h2 className="row-title">Movies recommended to you that you havent watched:</h2>
-            <div className="movie-row-container">
-                <div className="movie-row">
-                    {movies.map((movie : MovieType) => {
-                        if(movie.status == 0){
-                            return(<Movie movie={movie} jwt={jwt} refresh= {refresh}/>)
-                        }
-                    })}
-                </div>
-            </div>
+    const unwatched = useMemo(() => movies.filter((movie) => movie.status === 0), [movies]);
+    const watched = useMemo(() => movies.filter((movie) => movie.status === 1), [movies]);
 
-            <h2 className="row-title">Movies recommended to you that you HAVE watched:</h2>
-            <div className="movie-row-container">
-                <div className="movie-row">
-                    {movies.map((movie : MovieType) => {
-                        if(movie.status == 1){
-                            return(<Movie movie={movie} jwt={jwt} refresh={refresh}/>)
-                        }
-                    })}
+    return(
+        <div className="dashboard-page">
+            <header className="page-header">
+                <div>
+                    <p className="eyebrow">Your queue</p>
+                    <h1>Recommendations made for you</h1>
                 </div>
-            </div>
-            <button className= "users-button" onClick={() => {navigate('/Users')}}>Click me to recommend movies to other users</button>
+                <div className="header-actions">
+                    <button className="btn btn-ghost" onClick={() => {onLogout(); navigate('/')}}>
+                        Log out
+                    </button>
+                    <button className="btn btn-primary" onClick={() => {navigate('/Users')}}>
+                        Recommend to a friend
+                    </button>
+                </div>
+            </header>
+
+            <section className="section">
+                <div className="section-header">
+                    <h2>New to watch</h2>
+                    <span className="pill">{unwatched.length} picks</span>
+                </div>
+                <div className="movie-row">
+                    {unwatched.map((movie) => (
+                        <Movie key={`${movie.title}-new`} movie={movie} jwt={jwt} refresh={refresh} />
+                    ))}
+                </div>
+            </section>
+
+            <section className="section">
+                <div className="section-header">
+                    <h2>Watched and done</h2>
+                    <span className="pill pill-light">{watched.length} watched</span>
+                </div>
+                <div className="movie-row">
+                    {watched.map((movie) => (
+                        <Movie key={`${movie.title}-watched`} movie={movie} jwt={jwt} refresh={refresh} />
+                    ))}
+                </div>
+            </section>
         </div>
     )
 }

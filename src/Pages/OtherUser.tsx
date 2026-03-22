@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GetUserById } from "../Services/Users.service";
 import type { UserFullType } from "../Types/user";
 import Movie from "../Components/Movie";
@@ -20,7 +20,7 @@ const OtherUser : React.FC<OtherUserProps> = ({jwt}) => {
         id: '',
         userMovies: []
     });
-    const [query, setQuery] = useState(''); // single source of truth type shit
+    const [query, setQuery] = useState(''); // single source of truth
     const [result, setResult] = useState('');
     const [pending, setPending] = useState(false);
 
@@ -60,48 +60,67 @@ const OtherUser : React.FC<OtherUserProps> = ({jwt}) => {
     //Should i make an endpoint in my api for adding a movie thats like this?
     //if the movie exists in database, just add that directly, if not, scour the tmdb api to add that to our database
     //new endpoint --> no just populate the db w/ the top 100/1000 most popular movies and that will be fine for now, no point in allowing users to add to db
+    const watched = useMemo(() => {
+        return userData.userMovies.filter((movie: MovieType) => movie.status === 1);
+    }, [userData.userMovies]);
+
+    const unwatched = useMemo(() => {
+        return userData.userMovies.filter((movie: MovieType) => movie.status === 0);
+    }, [userData.userMovies]);
+
     return (
         <div className="other-user-page">
-            <button className="go-back-button" onClick={() => {navigate('/users')}}>Go back</button>
-            <h1 className="other-user-username">{userData.userName}</h1>
-            <h2 className="row-title">Movies they've watched</h2>
-            <div className="movie-row-container">
-                <div className="movie-row">
-                    {userData.userMovies.map((movie : MovieType) => {
-                        if(movie.status == 1){
-                            return( // i could refactor this to map it once and then append it to seperate div arrays 
-                                <Movie movie={movie} jwt={jwt} isOtherUserView={true}/>
-                                //AHUSDHUFSHD IMMA busT look at that REUSABILITY (I LOVE SCALABLE CLEAN CODEE!!!)
-                            )
-                        }
-                    })}
+            <header className="page-header">
+                <div>
+                    <p className="eyebrow">Recommend a movie</p>
+                    <h1>{userData.userName}</h1>
+                    <p className="muted">See what they have already watched before you send a new pick.</p>
                 </div>
-            </div>
-            <h2 className="row-title">Movies they've been recommened but HAVEN'T watched</h2>
-            <div className="movie-row-container">
-                <div className="movie-row">
-                {userData.userMovies.map((movie : MovieType) => {
-                    if(movie.status == 0){
-                        return(
-                            <Movie movie={movie} jwt={jwt} isOtherUserView={true}/>
-                            //AHUSDHUFSHD IMMA busT look at that REUSABILITY (I LOVE SCALABLE CLEAN CODEE!!!)
-                        )
-                    }
-                })}
-            </div>
-
-            </div>
-            
-            <h2>Add a movie recommendation to {userData.userName}!</h2>
-            {result}
-            <div className="add-movie-section">
-                <SearchMovie changeQuery = {changeQuery} query={query}/>
-                <button onClick={!pending ? handleSubmit : (() => {})}> {/*Ideally refactor this to have this outside of this component and into the otherUser page instead so this becomes more versatile --> i did it now its better*/}
-                    {!pending ? "Submit Request!" : "Pending..."}
+                <button className="btn btn-ghost" onClick={() => {navigate('/users')}}>
+                    Back to users
                 </button>
-            </div>
+            </header>
+
+            <section className="recommend-panel">
+                <div>
+                    <h2>Send a recommendation</h2>
+                    <p className="muted">
+                        Search for a title, confirm it, and send it straight to {userData.userName}.
+                    </p>
+                </div>
+                <div className="recommend-form">
+                    <SearchMovie changeQuery={changeQuery} query={query} />
+                    <button className="btn btn-primary" onClick={!pending ? handleSubmit : (() => {})}>
+                        {!pending ? "Send recommendation" : "Sending..."}
+                    </button>
+                </div>
+                {result && <p className="result-message">{result}</p>}
+            </section>
+
+            <section className="section">
+                <div className="section-header">
+                    <h2>Watched already</h2>
+                    <span className="pill pill-light">{watched.length} watched</span>
+                </div>
+                <div className="movie-row">
+                    {watched.map((movie: MovieType) => (
+                        <Movie key={`${movie.title}-watched`} movie={movie} jwt={jwt} isOtherUserView={true} />
+                    ))}
+                </div>
+            </section>
+
+            <section className="section">
+                <div className="section-header">
+                    <h2>Still unwatched</h2>
+                    <span className="pill">{unwatched.length} waiting</span>
+                </div>
+                <div className="movie-row">
+                    {unwatched.map((movie: MovieType) => (
+                        <Movie key={`${movie.title}-unwatched`} movie={movie} jwt={jwt} isOtherUserView={true} />
+                    ))}
+                </div>
+            </section>
         </div>
-             
     )
 }
 

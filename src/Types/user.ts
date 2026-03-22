@@ -3,8 +3,10 @@ export type UserBasicType = {
     id: string
 }
 
+import type { MovieType } from "./movieTypes";
+
 export type UserFullType = {
     userName: string,
     id: string,
-    userMovies : []
+    userMovies: MovieType[]
 }

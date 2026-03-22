@@ -21,59 +21,78 @@ const Login : React.FC<LoginProps> = ({changeJwt, changeUserName}) => {
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       try {
-        const res = await fetch(API_URL + "/api/account/login", { // refactor this to put into services instead bruh
+        const res = await fetch(API_URL + "/api/account/login", {
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify(formData)
         });
 
-        if(!res.ok) {
-          const msg = await res.text();
-          throw new Error(msg || "Signup failed.")
-        } else {
-          const data = await res.json();
-          changeJwt(data.token);
-          changeUserName(formData.username);
-          navigate("/dashboard");
+        if (!res.ok) {
+          const contentType = res.headers.get("content-type") || "";
+          let message = "Login failed. Please check your credentials.";
+
+          if (contentType.includes("application/json")) {
+            const payload = await res.json();
+            if (typeof payload === "string") {
+              message = payload;
+            } else if (payload?.message) {
+              message = payload.message;
+            }
+          } else {
+            const text = await res.text();
+            if (text) {
+              message = text;
+            }
+          }
+
+          setError(message);
+          return;
         }
+
+        const data = await res.json();
+        setError("");
+        changeJwt(data.token);
+        changeUserName(formData.username);
+        navigate("/dashboard");
       } catch(err){
-        setError("Error has occured.");
+        setError("Login failed. Please try again in a moment.");
       }
     }
     return (
-    <div className="max-w-md mx-auto p-4 border rounded-lg shadow">
-      <h2 className="text-xl font-bold mb-4">Log in</h2>
-    {error}
-      
-      <form onSubmit={handleSubmit} className="form-container">
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleChange}
-          className="p-2 border rounded"
-          required
-        />
+      <div className="auth-card">
+        <h2>Log in</h2>
+        {error && <p className="form-error">{error}</p>}
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          className="p-2 border rounded"
-          required
-        />
+        <form onSubmit={handleSubmit} className="form-stack">
+          <label className="field">
+            <span>Username</span>
+            <input
+              type="text"
+              name="username"
+              placeholder="Your handle"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <button
-          type="submit"
-          className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-        >
-          Enter the movie pit
-        </button>
-      </form>
-    </div>
+          <label className="field">
+            <span>Password</span>
+            <input
+              type="password"
+              name="password"
+              placeholder="••••••••"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </label>
+
+          <button type="submit" className="btn btn-primary btn-block">
+            Enter the movie pit
+          </button>
+        </form>
+      </div>
     )
 }
 
