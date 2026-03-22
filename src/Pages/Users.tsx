@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Usercard from "../Components/Usercard";
-import { GetAllUsers } from "../Services/Users.service";
+import { GetFriends } from "../Services/Friends.service";
 import { useNavigate } from "react-router-dom";
 import type { UserBasicType } from "../Types/user";
 import '../App.css'
@@ -16,11 +16,14 @@ const Users : React.FC<UsersProps> = ({jwt, currentUserName}) => {
     const [query, setQuery] = useState("");
 
     useEffect(() => {
-        GetAllUsers(jwt)
+        GetFriends(jwt)
         .then((data) => {
             setUsers(data);
         })
-    }, []);
+        .catch(() => {
+            setUsers([]);
+        });
+    }, [jwt]);
 
     function handleClick(userId: string){
         navigate(`/OtherUser/${userId}`)
@@ -41,12 +44,17 @@ const Users : React.FC<UsersProps> = ({jwt, currentUserName}) => {
                     <p className="eyebrow">Recommend a movie</p>
                     <h1>Pick who to send a movie to</h1>
                     <p className="muted">
-                        Search for a friend, tap their card, then send a fresh movie pick.
+                        Only friends can receive recommendations. Manage requests in the friends page.
                     </p>
                 </div>
-                <button className="btn btn-ghost" onClick={() => {navigate('/dashboard')}}>
-                    Back to dashboard
-                </button>
+                <div className="header-actions">
+                    <button className="btn btn-ghost" onClick={() => {navigate('/friends')}}>
+                        Friend requests
+                    </button>
+                    <button className="btn btn-ghost" onClick={() => {navigate('/dashboard')}}>
+                        Back to dashboard
+                    </button>
+                </div>
             </header>
 
             <div className="recommend-toolbar">
@@ -61,9 +69,19 @@ const Users : React.FC<UsersProps> = ({jwt, currentUserName}) => {
             </div>
 
             <div className="user-grid">
-                {filteredUsers.map((user) => (
-                    <Usercard key={user.id} user={user} handle={handleClick} />
-                ))}
+                {filteredUsers.length === 0 ? (
+                    <div className="empty-card">
+                        <h3>No friends yet</h3>
+                        <p className="muted">Send a friend request to unlock recommendations.</p>
+                        <button className="btn btn-primary" onClick={() => {navigate('/friends')}}>
+                            Find friends
+                        </button>
+                    </div>
+                ) : (
+                    filteredUsers.map((user) => (
+                        <Usercard key={user.id} user={user} handle={handleClick} />
+                    ))
+                )}
             </div>
         </div>
     )

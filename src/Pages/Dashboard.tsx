@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import GetAllUserMovies from "../Services/UserMovie.service";
-import Movie from "../Components/Movie";
+import RecommendationCard from "../Components/RecommendationCard";
 import type { MovieType } from "../Types/movieTypes";
 import { useNavigate } from "react-router-dom";
 
@@ -55,6 +55,9 @@ const Dashboard : React.FC<DashboardProps> = ({jwt, onLogout}) => {
                     <button className="btn btn-ghost" onClick={() => {onLogout(); navigate('/')}}>
                         Log out
                     </button>
+                    <button className="btn btn-ghost" onClick={() => {navigate('/friends')}}>
+                        Friend requests
+                    </button>
                     <button className="btn btn-primary" onClick={() => {navigate('/Users')}}>
                         Recommend to a friend
                     </button>
@@ -66,9 +69,9 @@ const Dashboard : React.FC<DashboardProps> = ({jwt, onLogout}) => {
                     <h2>New to watch</h2>
                     <span className="pill">{unwatched.length} picks</span>
                 </div>
-                <div className="movie-row">
+                <div className="recommendation-list">
                     {unwatched.map((movie) => (
-                        <Movie key={`${movie.title}-new`} movie={movie} jwt={jwt} refresh={refresh} />
+                        <RecommendationCard key={`${movie.title}-new`} recommendation={movie} />
                     ))}
                 </div>
             </section>
@@ -78,9 +81,9 @@ const Dashboard : React.FC<DashboardProps> = ({jwt, onLogout}) => {
                     <h2>Watched and done</h2>
                     <span className="pill pill-light">{watched.length} watched</span>
                 </div>
-                <div className="movie-row">
+                <div className="recommendation-list">
                     {watched.map((movie) => (
-                        <Movie key={`${movie.title}-watched`} movie={movie} jwt={jwt} refresh={refresh} />
+                        <RecommendationCard key={`${movie.title}-watched`} recommendation={movie} />
                     ))}
                 </div>
             </section>

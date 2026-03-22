@@ -7,6 +7,9 @@ import Users from './Pages/Users';
 import OtherUser from './Pages/OtherUser';
 import LoginPage from './Pages/LoginPage';
 import SignupPage from './Pages/SignupPage';
+import FriendRequests from './Pages/FriendRequests';
+import MovieLibrary from './Pages/MovieLibrary';
+import RecommendationDetails from './Pages/RecommendationDetails';
 
 function App() {
   const [jwt, setJwt] = useState('');
@@ -114,12 +117,48 @@ function App() {
           }
         />
         <Route
+          path="/friends"
+          element={
+            !isHydrated ? (
+              <div className="page-loading">Loading...</div>
+            ) : jwt ? (
+              <FriendRequests jwt={jwt} currentUserName={currentUserName} />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route
           path="/OtherUser/:id"
           element={
             !isHydrated ? (
               <div className="page-loading">Loading...</div>
             ) : jwt ? (
               <OtherUser jwt={jwt} />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route
+          path="/movies"
+          element={
+            !isHydrated ? (
+              <div className="page-loading">Loading...</div>
+            ) : jwt ? (
+              <MovieLibrary jwt={jwt} />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route
+          path="/recommendations/:id"
+          element={
+            !isHydrated ? (
+              <div className="page-loading">Loading...</div>
+            ) : jwt ? (
+              <RecommendationDetails jwt={jwt} />
             ) : (
               <Navigate to="/" />
             )

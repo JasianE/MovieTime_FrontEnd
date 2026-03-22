@@ -1,10 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { GetUserById } from "../Services/Users.service";
 import type { UserFullType } from "../Types/user";
 import Movie from "../Components/Movie";
 import type { MovieType } from "../Types/movieTypes";
-import SearchMovie from "../Components/SearchMovie";
 import { AddMovieToUser } from "../Services/Movies.service";
 import { useNavigate } from "react-router-dom";
 import '../App.css'
@@ -15,12 +14,14 @@ type OtherUserProps = {
 const OtherUser : React.FC<OtherUserProps> = ({jwt}) => {
     const navigate = useNavigate();
     const { id } = useParams();
+    const [searchParams] = useSearchParams();
     const [userData, setUserData] = useState<UserFullType>({
         userName: '',
         id: '',
         userMovies: []
     });
-    const [query, setQuery] = useState(''); // single source of truth
+    const [query, setQuery] = useState(''); // selected movie title
+    const [reason, setReason] = useState('');
     const [result, setResult] = useState('');
     const [pending, setPending] = useState(false);
 
@@ -34,18 +35,26 @@ const OtherUser : React.FC<OtherUserProps> = ({jwt}) => {
         }
     }, [result])
 
+    useEffect(() => {
+        const selectedTitle = searchParams.get("title") || "";
+        if (selectedTitle) {
+            setQuery(selectedTitle);
+        }
+    }, [searchParams])
+
     function handleSubmit(){
             //Ok so i guess pass in the user as props to this method
             //And then boom you pass that in and then this will work (just call the add movie to other user endpoint on .net)
             //And then we get a movie recommendation app!
             if(!pending){
-                AddMovieToUser(userData.userName, jwt, query)
+                AddMovieToUser(userData.userName, jwt, query, reason)
             .then((data) => {
                 if(typeof data == "string"){
                     setResult(data);
                 } else {
                     setResult("Sucessfully added new movie.") // if its not a string it aint an error and i dont wanna deal with json types right now
                 }
+                setReason('');
                 setPending(false);
 
             })
@@ -53,8 +62,8 @@ const OtherUser : React.FC<OtherUserProps> = ({jwt}) => {
             setPending(true)
         }
 
-    function changeQuery(queried: string){
-        setQuery(queried);
+    function clearSelection(){
+        setQuery("");
     }
 
     //Should i make an endpoint in my api for adding a movie thats like this?
@@ -85,14 +94,47 @@ const OtherUser : React.FC<OtherUserProps> = ({jwt}) => {
                 <div>
                     <h2>Send a recommendation</h2>
                     <p className="muted">
-                        Search for a title, confirm it, and send it straight to {userData.userName}.
+                        Choose a movie from the library, then send it straight to {userData.userName}.
                     </p>
                 </div>
                 <div className="recommend-form">
-                    <SearchMovie changeQuery={changeQuery} query={query} />
-                    <button className="btn btn-primary" onClick={!pending ? handleSubmit : (() => {})}>
-                        {!pending ? "Send recommendation" : "Sending..."}
-                    </button>
+                    <div className="selected-movie">
+                        <label>Selected movie</label>
+                        <div className="selected-row">
+                            <input
+                                type="text"
+                                readOnly
+                                value={query || "None selected"}
+                            />
+                            <button className="btn btn-ghost" onClick={clearSelection} disabled={!query}>
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                    <div className="selected-movie">
+                        <label>Why recommend it? (optional)</label>
+                        <input
+                            type="text"
+                            value={reason}
+                            placeholder="A quick note for your friend"
+                            onChange={(event) => setReason(event.target.value)}
+                        />
+                    </div>
+                    <div className="recommend-actions">
+                        <button
+                            className="btn btn-ghost"
+                            onClick={() => {navigate(`/movies?returnTo=/OtherUser/${id}`)}}
+                        >
+                            Browse movie library
+                        </button>
+                        <button
+                            className="btn btn-primary"
+                            onClick={!pending && query ? handleSubmit : (() => {})}
+                            disabled={!query}
+                        >
+                            {!pending ? "Send recommendation" : "Sending..."}
+                        </button>
+                    </div>
                 </div>
                 {result && <p className="result-message">{result}</p>}
             </section>
