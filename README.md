@@ -1,69 +1,37 @@
-# React + TypeScript + Vite
+# MovieTime Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend for the MovieTime application. Built with React, Vite, and TypeScript. This project communicates with the MovieTime backend (.NET Web API) to provide movie data and recommendations. 
 
-Currently, two official plugins are available:
+## Tech Stack
+- React 18
+- TypeScript
+- Vite
+- React Router
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
+- Fast build and development with Vite
+- Type-safe components with TypeScript
+- Client-side routing using React Router
+- Responsive UI for browsing 
+- API integration with a .NET backend
+- Jun's (me, the one who made this) personal movie watch list <-- Gasp
 
-## Expanding the ESLint configuration
+## `src/` folder
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+src/
+├── Components/      # Reusable UI components (movie rows, cards, navigation)
+├── Pages/           # Page-level components (Login, Signup, Dashboard, etc.)
+├── Services/        # API call logic and integration
+├── Types/           # TypeScript type definitions
+├── assets/          # Static files (images, icons, styles)
+├── App.css          # Global styles
+├── App.tsx          # Root component with route definitions
+├── index.css        # Base CSS
+├── main.tsx         # Application entry point
+└── vite-env.d.ts    # Vite TypeScript environment definitions
 ```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Future Improvements
+- User comments / movie comments
+- Rating system
+- Group movie recommendations (I want to add feature that would be like groups / servers for discord)
