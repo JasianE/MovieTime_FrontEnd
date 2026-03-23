@@ -2,7 +2,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { GetUserById } from "../Services/Users.service";
 import type { UserFullType } from "../Types/user";
-import Movie from "../Components/Movie";
+import RecommendationCard from "../Components/RecommendationCard";
 import type { MovieType } from "../Types/movieTypes";
 import { AddMovieToUser } from "../Services/Movies.service";
 import { useNavigate } from "react-router-dom";
@@ -144,9 +144,14 @@ const OtherUser : React.FC<OtherUserProps> = ({jwt}) => {
                     <h2>Watched already</h2>
                     <span className="pill pill-light">{watched.length} watched</span>
                 </div>
-                <div className="movie-row">
+                <div className="recommendation-list">
                     {watched.map((movie: MovieType) => (
-                        <Movie key={`${movie.title}-watched`} movie={movie} jwt={jwt} isOtherUserView={true} />
+                        <RecommendationCard
+                            key={`${movie.title}-watched`}
+                            recommendation={movie}
+                            showDetailsLink={false}
+                            showRecipientInfo={true}
+                        />
                     ))}
                 </div>
             </section>
@@ -156,9 +161,14 @@ const OtherUser : React.FC<OtherUserProps> = ({jwt}) => {
                     <h2>Still unwatched</h2>
                     <span className="pill">{unwatched.length} waiting</span>
                 </div>
-                <div className="movie-row">
+                <div className="recommendation-list">
                     {unwatched.map((movie: MovieType) => (
-                        <Movie key={`${movie.title}-unwatched`} movie={movie} jwt={jwt} isOtherUserView={true} />
+                        <RecommendationCard
+                            key={`${movie.title}-unwatched`}
+                            recommendation={movie}
+                            showDetailsLink={false}
+                            showRecipientInfo={true}
+                        />
                     ))}
                 </div>
             </section>

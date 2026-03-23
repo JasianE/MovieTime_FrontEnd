@@ -432,6 +432,13 @@
   flex-wrap: wrap;
 }
 
+.recommendation-notes {
+  width: 100%;
+  padding-top: 0.4rem;
+  border-top: 1px dashed rgba(138, 161, 177, 0.4);
+  font-size: 0.9rem;
+}
+
 .recommendation-details-page {
   padding: 2.5rem clamp(1.5rem, 4vw, 5rem) 4rem;
   min-height: 100vh;

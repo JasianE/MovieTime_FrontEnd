@@ -4,11 +4,18 @@ import "../App.css";
 
 type RecommendationCardProps = {
   recommendation: MovieType;
+  showDetailsLink?: boolean;
+  showRecipientInfo?: boolean;
 };
 
-const RecommendationCard: React.FC<RecommendationCardProps> = ({ recommendation }) => {
+const RecommendationCard: React.FC<RecommendationCardProps> = ({
+  recommendation,
+  showDetailsLink = true,
+  showRecipientInfo = false
+}) => {
   const navigate = useNavigate();
   const ratingLabel = recommendation.recipientRating ? `${recommendation.recipientRating}/5` : "Not rated";
+  const statusLabel = recommendation.status === 1 ? "Watched" : "Not watched";
 
   return (
     <div className="recommendation-card">
@@ -28,13 +35,21 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({ recommendation 
       </div>
       <div className="recommendation-actions">
         <span className="pill pill-light">{ratingLabel}</span>
-        <button
-          className="btn btn-ghost"
-          onClick={() => navigate(`/recommendations/${recommendation.recommendationId}`)}
-        >
-          Open details
-        </button>
+        {showRecipientInfo && <span className="pill">{statusLabel}</span>}
+        {showDetailsLink && (
+          <button
+            className="btn btn-ghost"
+            onClick={() => navigate(`/recommendations/${recommendation.recommendationId}`)}
+          >
+            Open details
+          </button>
+        )}
       </div>
+      {showRecipientInfo && (
+        <div className="recommendation-notes">
+          <p className="muted">Notes: {recommendation.recipientNotes || "No notes yet."}</p>
+        </div>
+      )}
     </div>
   );
 };
