@@ -1,6 +1,6 @@
 # MovieTime Frontend
 
-The frontend for the MovieTime application. Built with React, Vite, and TypeScript. This project communicates with the MovieTime backend (.NET Web API) to provide movie data and recommendations. 
+The frontend for the MovieTime application. Built with React, Vite, and TypeScript. This project communicates with the MovieTime backend (.NET Web API) to provide movie data and recommendations.
 
 ## Tech Stack
 - React 18
@@ -12,9 +12,25 @@ The frontend for the MovieTime application. Built with React, Vite, and TypeScri
 - Fast build and development with Vite
 - Type-safe components with TypeScript
 - Client-side routing using React Router
-- Responsive UI for browsing 
+- Responsive UI for browsing
+- Auth flow with persistent login
+- Friend-only recommendations with requests/acceptance
+- Movie library browsing with server paging
+- Recommendation details page for rating, notes, and watched state
 - API integration with a .NET backend
-- Jun's (me, the one who made this) personal movie watch list <-- Gasp
+
+## Setup
+
+```bash
+npm install
+npm run dev
+```
+
+Optional environment variable:
+
+```
+VITE_API_URL=http://localhost:5000
+```
 
 ## `src/` folder
 
@@ -32,6 +48,5 @@ src/
 └── vite-env.d.ts    # Vite TypeScript environment definitions
 ```
 ## Future Improvements
-- User comments / movie comments
-- Rating system
-- Group movie recommendations (I want to add feature that would be like groups / servers for discord)
+- Group movie recommendations
+- Notifications for friend requests and new recommendations
