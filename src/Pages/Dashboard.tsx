@@ -15,7 +15,6 @@ const Dashboard : React.FC<DashboardProps> = ({jwt, onLogout}) => {
     const navigate = useNavigate();
     
     const [movies, setMovies] = useState<MovieType[]>([])
-    const [forceResetCounter, setForceResetCounter] = useState(0);
     const requestIdRef = useRef(0);
 
     useEffect(() => {
@@ -35,11 +34,7 @@ const Dashboard : React.FC<DashboardProps> = ({jwt, onLogout}) => {
         return () => {
             isActive = false;
         };
-    }, [forceResetCounter, jwt])
-
-    function refresh(){
-        setForceResetCounter((value) => value + 1);
-    }
+    }, [jwt])
 
     const unwatched = useMemo(() => movies.filter((movie) => movie.status === 0), [movies]);
     const watched = useMemo(() => movies.filter((movie) => movie.status === 1), [movies]);

@@ -32,6 +32,19 @@ Optional environment variable:
 VITE_API_URL=http://localhost:5000
 ```
 
+## Docker Compose
+
+From the repo root:
+
+```bash
+docker compose up --build
+```
+
+Compose reads environment defaults from the repo root .env file.
+
+- Frontend: http://localhost:3000
+- Backend: http://localhost:5000
+
 ## `src/` folder
 
 ```bash
